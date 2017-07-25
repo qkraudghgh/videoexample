@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Video Example</title>
+    <link href="https://vjs.zencdn.net/5.19/video-js.min.css" rel="stylesheet">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+  <body>
+
+    <video
+    id="vid1"
+    class="video-js vjs-default-skin"
+    controls
+    width= 400
+    data-setup='{ "techOrder": ["youtube"], "sources": [{ "type": "video/youtube", "src": "https://www.youtube.com/watch?v=EHgeGRU3wDI"}] }'>
+  </video>
+
+  <!-- http://video.slid.ee:5000/video/url?url=http://tv.naver.com/v/1871586/list/141411 -->
+  <!-- 이거 이렇게 하면 MP4 불러와줌 -->
+  <button id="next-button">getCurrentTime</button>
+  <button id="next-button1">go to 60</button>
+  <button id="next-button2">go to 70</button>
+  <button id="next-button3">set</button>
+  <button id="next-button4">end</button>
+  <button id="next-button5">loopStart</button>
+    <script src="https://vjs.zencdn.net/5.19/video.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="./youtube.js"></script>
+    <script src="https://cdn.rawgit.com/phhu/videojs-abloop/master/dist/videojs-abloop.min.js"></script>
+    <script type="text/javascript" src="./index.js"></script>
+  </body>
+</html>

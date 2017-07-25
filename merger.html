@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko"><head>
+    <title>Content and time code Merger</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  </head>
+  <body>
+    <h1>Content and time code Merger</h1>
+    <h4>왼쪽엔 내용, 오른쪽엔 타임코드를 붙여주세요</h4>
+    <h5>따로 저장이나 불러오는 기능은 없습니다. 데이터 손실에 유의하세요</h5>
+    <h5>제대로 합쳐졌나 한번 꼭 확인해주세요</h5>
+    <br>
+    <div style="display: inline-block;">
+      <label for="contents"><b>Contents</b></label>
+      <br>
+      <textarea cols="80" id="contents" name="content" rows="20"></textarea>
+    </div>
+    <div style="display: inline-block;">
+      <label for="timecode"><b>Timecode</b></label>
+      <br>
+      <textarea cols="80" id="timecode" name="content" rows="20"></textarea>
+    </div>
+    <button onclick="convert()">Merge</button>
+    <div id="webvtt"></div>
+    <script>
+        function convert() {
+          input = document.getElementById("contents");
+          input2 = document.getElementById("timecode")
+          output = document.getElementById("webvtt");
+          contents = input.value;
+          timecode = input2.value;
+          webvtt = merger(contents, timecode);
+          output.innerHTML = "<textarea rows=20 cols=80>"+webvtt+"</textarea>";
+        }
+
+        function isSameLength(data, data2) {
+          console.log("contents: " + data.length + "time: " + data2.length);
+          return data.length === data2.length ? true : false;
+        }
+
+        function isContents(data) {
+          return data.length > 0 ? true : false; 
+        }
+        
+        function merger(contents, timecode) {
+          // remove dos newlines
+          var tempContents = contents.replace(/\r+/g, '');
+          var tempTimecode = timecode.replace(/\r+/g, '');
+          // trim white space start and end
+          tempContents = tempContents.replace(/^\s+|\s+$/g, '');
+          tempTimecode = tempTimecode.replace(/^\s+|\s+$/g, '');
+        
+          // get cues
+          var contentsCuelist = tempContents.split('\n\n');
+          var timeCuelist = tempTimecode.split('\n\n');
+          var result = "";
+
+          if (timeCuelist[0].toLowerCase() == "webvtt") {
+            timeCuelist.shift();
+          }
+        
+          if (isSameLength(contentsCuelist, timeCuelist) && isContents(contentsCuelist) && isContents(timeCuelist)) {
+            result += "VRT\n\n";
+            for (var i = 0; i < contentsCuelist.length; i++) {
+              result += mergeTool(timeCuelist[i], contentsCuelist[i]);
+            }
+          } else {
+            alert("내용을 제대로 채웠는지 확인해주세요!");
+          }
+          
+          return result;
+        }
+        
+        function mergeTool(time, content) {
+          var cue = "";
+        
+          return cue + time + "\n" + content + "\n\n";
+        }
+    </script>
+  </body>
+</html>
